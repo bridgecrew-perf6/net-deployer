@@ -1,15 +1,13 @@
-﻿using System;
-
-namespace deployer.Model;
+﻿namespace deployer.Model;
 
 public class Version
 {
-  public string ProgramVersion { get; }
-
   public Version(string programVersion)
   {
     ProgramVersion = programVersion;
   }
+
+  public string ProgramVersion { get; }
 
 
   public static bool operator <(Version x, Version y)
@@ -48,7 +46,7 @@ public class Version
   private static int VersionCompare(string v1, string v2)
   {
     int vNum1 = 0, vNum2 = 0;
-    for (int i = 0, j = 0; (i < v1.Length || j < v2.Length);)
+    for (int i = 0, j = 0; i < v1.Length || j < v2.Length;)
     {
       while (i < v1.Length && v1[i] != '.')
       {

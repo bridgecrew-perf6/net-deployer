@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace deployer;
+﻿namespace deployer;
 
 internal static class Program
 {

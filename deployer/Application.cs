@@ -22,16 +22,7 @@ public class Application
   private const string ResourceNameManifest = "deployer.source.manifest.txt";
   private const string ResourceNameZip = "deployer.source.data.zip";
 
-
-  private string AppName { get; }
-  private string AppPath { get; }
-  private Version AppVersion { get; }
-  private bool CreateLink { get; }
-  private Stream AppZip { get; }
-  private string AppExecutable { get; }
-
   /// <summary>
-  /// 
   /// </summary>
   public Application()
   {
@@ -51,8 +42,15 @@ public class Application
     CreateLink = localManifest.ContainsKey(AppKeyCreateLink) && localManifest[AppKeyCreateLink] == "true";
   }
 
+
+  private string AppName { get; }
+  private string AppPath { get; }
+  private Version AppVersion { get; }
+  private bool CreateLink { get; }
+  private Stream AppZip { get; }
+  private string AppExecutable { get; }
+
   /// <summary>
-  /// 
   /// </summary>
   public void Copy()
   {
@@ -69,16 +67,16 @@ public class Application
 
       var oldVersion = new Version(oldManifest.ContainsKey(AppKeyVersion) ? oldManifest[AppKeyVersion] : AppKeyVersionDefault);
       if (AppVersion > oldVersion)
+      {
+        Directory.Delete(AppPath, true);
         UpdateDir();
+      }
     }
     else
     {
       UpdateDir();
-      if (CreateLink)
-      {
-        AppShortcutToDesktop(AppName, fullPathAppExecutable);
-      }
     }
+
 
     Process.Start(fullPathAppExecutable);
   }
@@ -112,10 +110,13 @@ public class Application
 
   private void UpdateDir()
   {
+    var fullPathAppExecutable = AppPath + @$"\{AppExecutable}";
     var remoteManifestPath = new FileInfo(AppPath + @$"\{ManifestFileName}");
     var archive = new ZipArchive(AppZip);
     archive.ExtractToDirectory(AppPath);
     File.WriteAllText(remoteManifestPath.FullName, GetInternalFileAsText(ResourceNameManifest));
+    if (CreateLink)
+      AppShortcutToDesktop(AppName, fullPathAppExecutable);
   }
 
 

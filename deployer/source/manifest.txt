@@ -1,0 +1,6 @@
+﻿name=Hello World
+main_dir=HelloWorld
+version=1.0
+appdata=true
+exe=WpfApp1.exe
+create_link=true
